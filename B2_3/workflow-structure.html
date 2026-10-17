@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<title>소셜 콘텐츠 스튜디오 · 자동화 워크플로우 구조</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#edf1f6;color:#172639;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif}.sheet{width:1600px;padding:55px 65px 42px;background:#f7f9fc}.eyebrow{font-size:16px;font-weight:700;letter-spacing:2px;color:#3867aa}h1{font-size:40px;margin:12px 0}header p{font-size:20px;color:#52637a;line-height:1.6;margin:0 0 28px}.tag{display:inline-block;background:#e2ecfb;color:#255396;border-radius:20px;padding:8px 15px;font-size:15px}.flow{display:flex;align-items:stretch;margin:30px 0 23px}.node{flex:1;min-width:0;background:white;border:1px solid #d6dfeb;border-radius:16px;padding:22px 18px;box-shadow:0 5px 14px #254b6a06}.num{font-size:14px;letter-spacing:1px;color:#517196;font-weight:700}.node h2{font-size:23px;margin:13px 0 15px}.node p{font-size:17px;line-height:1.65;color:#4d6075;margin:0}.arrow{align-self:center;padding:0 9px;color:#52739e;font-size:25px}.node.blue{background:#edf4ff;border-color:#b8d0f0}.node.green{background:#eaf6ef;border-color:#b7d8c4}.stage{font-size:14px;color:#697d94;margin-top:18px}.details{display:grid;grid-template-columns:1fr 1fr;gap:24px}.box{padding:25px 28px;background:white;border:1px solid #d6dfeb;border-radius:16px}.box h3{font-size:22px;margin:0 0 17px}.line{font-size:18px;line-height:1.75;margin:8px 0}.line b{display:inline-block;min-width:115px;color:#235793}.chain{font-size:18px;line-height:1.9;background:#f2f6fb;border-radius:10px;padding:14px 18px}.note{font-size:16px;color:#52637a;line-height:1.75;margin-top:17px}.bottom{display:flex;gap:22px;margin-top:24px}.bottom .box{flex:1;background:#f0f4f9}.bottom h3{font-size:19px;margin-bottom:10px}.bottom p{font-size:16px;line-height:1.7;margin:0;color:#4d6075}footer{font-size:14px;color:#6e7f93;margin-top:23px;display:flex;justify-content:space-between}
+</style>
+<main class="sheet">
+<header><span class="eyebrow">SOCIAL CONTENT STUDIO / DELIVERABLE 01</span><h1>하나의 주제에서 세 플랫폼 콘텐츠와 이미지까지</h1><p>브라우저 폼 제출을 시작점으로, 웹 검색 근거를 공유하는 글과 대표 이미지를 생성·저장합니다.</p><span class="tag">현재 로컬 구현 기준 · 단계별 연결 구조도</span></header>
+<section class="flow">
+<article class="node"><span class="num">START</span><h2>주제 입력·제출</h2><p>키워드 · 검색 기간<br>공통 톤 · 생성 경로<br>입력 검증 / Job 발급</p><div class="stage">트리거: 생성 버튼·폼 제출</div></article><span class="arrow">→</span>
+<article class="node"><span class="num">01 / SEARCH</span><h2>웹 이슈 검색</h2><p>관련 자료·발행일 확인<br>대표 이슈 선택<br>출처 URL·발췌 수집</p><div class="stage">출력: 이슈 + sources</div></article><span class="arrow">→</span>
+<article class="node"><span class="num">02 / EVIDENCE</span><h2>공통 근거 정리</h2><p>검색 발췌에서 사실 정리<br>각 사실에 출처 ID 연결<br>세 플랫폼이 같은 근거 사용</p><div class="stage">출력: facts + sourceIds</div></article><span class="arrow">→</span>
+<article class="node blue"><span class="num">03 / TEXT</span><h2>글 생성·검증</h2><p>인스타그램 → 블로그 → X<br>플랫폼별 형식·톤 적용<br>실패 시 최대 2회 수정</p><div class="stage">출력: 글 3종 + 검증 결과</div></article><span class="arrow">→</span>
+<article class="node blue"><span class="num">04 / IMAGE</span><h2>대표 이미지</h2><p>이슈·사실 → 프롬프트<br>전용 Chrome에 전송<br>생성 대기·이미지 회수</p><div class="stage">출력: 실제 이미지 파일</div></article><span class="arrow">→</span>
+<article class="node green"><span class="num">05 / SAVE</span><h2>최종 저장</h2><p>도우미의 자동 완료 콜백<br>D1: 작업·글·근거<br>R2: 이미지 바이트</p><div class="stage">완료: complete / 다시 열기</div></article>
+</section>
+<section class="details">
+<article class="box"><h3>플랫폼별 생성 규칙</h3><div class="line"><b>인스타그램</b> 짧고 친근한 캡션 + 해시태그 10개</div><div class="line"><b>블로그</b> 제목 + 소제목 2개 이상 + 본문 500자 이상</div><div class="line"><b>X</b> 출처 링크 포함 · 가중 글자 수 280 이내</div><div class="note">현재 구현은 세 플랫폼을 순차 생성합니다.<br>형식 검사 → 출처·숫자 검사 → AI 근거 대조 → 통과 또는 수정</div></article>
+<article class="box"><h3>이미지 이후 무인 저장 연결</h3><div class="chain">앱 서버 → 이미지 도우미 → 전용 ChatGPT Chrome<br>이미지 회수 → 인증된 완료 콜백 → 서버 검증<br>R2 이미지 저장 + D1 상태 저장 → save 완료</div><div class="note">이미지 작업 등록 후에는 앱 화면이 닫혀도 저장이 이어집니다.<br>전제: 로컬 서버·도우미·로그인된 전용 Chrome 실행 유지</div></article>
+</section>
+<section class="bottom"><article class="box"><h3>중단·중복 처리</h3><p>완료 단계 보존 · 실패 단계 재개 · 이미지 작업 실행 중복 방지<br>완료 콜백 최대 5회 재시도 · 도우미 재시작 시 미저장 결과 복구</p></article><article class="box"><h3>실제 무인 이미지 저장 검증</h3><p>입력 주제: 로봇 자동화 / 글 3종 + 1254×1254 PNG 저장<br>이미지 시작 요청 이후 수동 완료 요청 없이 최종 complete 확인</p></article></section>
+<footer><span>이 그림은 실제 코드의 구조 설명도이며, 실제 앱 스크린샷은 별도 첨부합니다.</span><span>2026.10.17 · 소셜 콘텐츠 스튜디오</span></footer>
+</main></html>
